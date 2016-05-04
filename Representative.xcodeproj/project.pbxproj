@@ -17,6 +17,7 @@
 		68BABCFC1CD9ACCC001AC1FB /* StateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BABCFB1CD9ACCC001AC1FB /* StateController.swift */; };
 		68BABCFE1CD9ADBF001AC1FB /* Representative.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BABCFD1CD9ADBF001AC1FB /* Representative.swift */; };
 		68BABD001CD9AF10001AC1FB /* NetworkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BABCFF1CD9AF10001AC1FB /* NetworkController.swift */; };
+		68BABD021CD9AFC0001AC1FB /* RepresentativeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BABD011CD9AFC0001AC1FB /* RepresentativeController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		68BABCFB1CD9ACCC001AC1FB /* StateController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateController.swift; sourceTree = "<group>"; };
 		68BABCFD1CD9ADBF001AC1FB /* Representative.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Representative.swift; sourceTree = "<group>"; };
 		68BABCFF1CD9AF10001AC1FB /* NetworkController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkController.swift; sourceTree = "<group>"; };
+		68BABD011CD9AFC0001AC1FB /* RepresentativeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepresentativeController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +108,7 @@
 				68BABCCD1CD9ACA4001AC1FB /* AppDelegate.swift */,
 				68BABCFB1CD9ACCC001AC1FB /* StateController.swift */,
 				68BABCFD1CD9ADBF001AC1FB /* Representative.swift */,
+				68BABD011CD9AFC0001AC1FB /* RepresentativeController.swift */,
 				68BABCFF1CD9AF10001AC1FB /* NetworkController.swift */,
 				68BABCCF1CD9ACA4001AC1FB /* ViewController.swift */,
 				68BABCD11CD9ACA4001AC1FB /* Main.storyboard */,
@@ -270,6 +273,7 @@
 				68BABCFE1CD9ADBF001AC1FB /* Representative.swift in Sources */,
 				68BABCD01CD9ACA4001AC1FB /* ViewController.swift in Sources */,
 				68BABCFC1CD9ACCC001AC1FB /* StateController.swift in Sources */,
+				68BABD021CD9AFC0001AC1FB /* RepresentativeController.swift in Sources */,
 				68BABCCE1CD9ACA4001AC1FB /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
