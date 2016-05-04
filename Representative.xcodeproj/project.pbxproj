@@ -18,6 +18,8 @@
 		68BABD001CD9AF10001AC1FB /* NetworkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BABCFF1CD9AF10001AC1FB /* NetworkController.swift */; };
 		68BABD021CD9AFC0001AC1FB /* RepresentativeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BABD011CD9AFC0001AC1FB /* RepresentativeController.swift */; };
 		68BABD061CD9B1EA001AC1FB /* StateListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BABD051CD9B1EA001AC1FB /* StateListTableViewController.swift */; };
+		68BABD081CD9B3A4001AC1FB /* RepresentativeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BABD071CD9B3A4001AC1FB /* RepresentativeTableViewCell.swift */; };
+		68BABD0A1CD9B4A0001AC1FB /* StateDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BABD091CD9B4A0001AC1FB /* StateDetailTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +57,8 @@
 		68BABCFF1CD9AF10001AC1FB /* NetworkController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkController.swift; sourceTree = "<group>"; };
 		68BABD011CD9AFC0001AC1FB /* RepresentativeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepresentativeController.swift; sourceTree = "<group>"; };
 		68BABD051CD9B1EA001AC1FB /* StateListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateListTableViewController.swift; sourceTree = "<group>"; };
+		68BABD071CD9B3A4001AC1FB /* RepresentativeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepresentativeTableViewCell.swift; sourceTree = "<group>"; };
+		68BABD091CD9B4A0001AC1FB /* StateDetailTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateDetailTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +115,8 @@
 				68BABD011CD9AFC0001AC1FB /* RepresentativeController.swift */,
 				68BABCFF1CD9AF10001AC1FB /* NetworkController.swift */,
 				68BABD051CD9B1EA001AC1FB /* StateListTableViewController.swift */,
+				68BABD091CD9B4A0001AC1FB /* StateDetailTableViewController.swift */,
+				68BABD071CD9B3A4001AC1FB /* RepresentativeTableViewCell.swift */,
 				68BABCD11CD9ACA4001AC1FB /* Main.storyboard */,
 				68BABCD41CD9ACA4001AC1FB /* Assets.xcassets */,
 				68BABCD61CD9ACA4001AC1FB /* LaunchScreen.storyboard */,
@@ -269,7 +275,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68BABD081CD9B3A4001AC1FB /* RepresentativeTableViewCell.swift in Sources */,
 				68BABD001CD9AF10001AC1FB /* NetworkController.swift in Sources */,
+				68BABD0A1CD9B4A0001AC1FB /* StateDetailTableViewController.swift in Sources */,
 				68BABD061CD9B1EA001AC1FB /* StateListTableViewController.swift in Sources */,
 				68BABCFE1CD9ADBF001AC1FB /* Representative.swift in Sources */,
 				68BABCFC1CD9ACCC001AC1FB /* StateController.swift in Sources */,
