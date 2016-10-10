@@ -6,7 +6,7 @@ Students will build an app to get the representives (law makers) in a user-reque
 
 Students who complete this project independently are able to:
 
-* use NSURLSession to make aysncronous network calls
+* use URLSession to make aysncronous network calls
 * parse JSON data and generate model object from the data
 * use closures to execute code when an asyncronous task is complete
 * build custom table views
@@ -25,21 +25,21 @@ Students who complete this project independently are able to:
     * `let phone: String`
     * `let office: String`
     * `let link: String`
-4. Create a failable initializer method with a parameter of a JSON dictionary (`[String: AnyObject]`. This is the method you will use to initialize your `Representative` object from the JSON dictionary. Remember to use a sample endpoint to inspect the JSON you will get back and the keys you will use to get each piece of data.
+4. Create a failable initializer method with a parameter of a JSON dictionary (`[String: Any]`. This is the method you will use to initialize your `Representative` object from the JSON dictionary. Remember to use a sample endpoint to inspect the JSON you will get back and the keys you will use to get each piece of data.
 
 ### Network Controller
 
 Create a `NetworkController` class. This will have methods to build the different URLs you might want and it should have a method to return NSData from a URL. 
 
-The `NetworkController` will be responsible for building URLs and executing  HTTP requests. Build the `NetworkController` to support different HTTP methods (GET, PUT, POST, PATCH, DELETE), and keep things generic such that you could use the same `NetworkController` in future projects if desired.
+The `NetworkController` will be responsible for building URLs and executing HTTP requests. Build the `NetworkController` to support different HTTP methods (GET, PUT, POST, PATCH, DELETE), and keep things generic such that you could use the same `NetworkController` in future projects if desired.
 
 It is good practice to write reusable code. Even when you do not plan to reuse the class in future projects, it will help you keep the roles of your types properly separated. In this specific case, it is good practice for the `NetworkController` to not know anything about the project's model or controller types.
 
 1. Write a `String` typed `enum` called `HTTPMethod`. You will use this enum to classify our HTTP requests as GET, PUT, POST, PATCH, or DELETE requests. Add cases for each.
     * example: `case Get = "GET"`
-2. Write a function signature `performRequest` that will take a `URL`, an `HTTPMethod`, an optional `[String: String]` dictionary of URL parameters, an optional `Data` request body, and an optional completion closure. The completion closure should include a `Data?` data parameter and an `Error?` error parameter, and the should return `Void`. 
+2. Write a function signature `performRequest(for` that will take a `URL`, an `HTTPMethod`, an optional `[String: String]` dictionary of URL parameters, an optional `Data` request body, and an optional completion closure. The completion closure should include a `Data?` data parameter and an `Error?` error parameter, and the should return `Void`. 
     * note: At this point, it is OK if you do not understand why you are including each parameter. Spend some time contemplating each parameter and why you would include it in this function. For example: An HTTP request is made up of a URL, and an HTTP Method. Certain requests need URL parameters. Certain POST or PUT requests can carry a body. The completion closure is included so you know when the request is complete.
-3. Add the following `url(byAdding parameters` function to your `NetworkController` class. This function takes a base URL, URL parameters, and returns a completed URL with the parameters in place.
+3. Add the following `url(byAdding parameters` function to your `NetworkController` class. This function takes URL parameters, a base URL, and returns a completed URL with the parameters in place.
     * example: To perform a Google Search, you use the URL `https://google.com/search?q=test`. 'q' and 'test' are URL parameters, with 'q' being the name, and 'test' beging the value. This function will take the base URL `https://google.com/search` and a `[String: String]` dictionary `["q":"test"]`, and return the URL `https://google.com/search?q=test`
 
 ```swift
