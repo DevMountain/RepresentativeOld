@@ -15,15 +15,15 @@ class StateDetailTableViewController: UITableViewController {
 
         if let state = state {
             
-            UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
             
             RepresentativeController.searchRepsByState(state, completion: { (representatives) in
                 
                 self.representatives = representatives
                 
-                dispatch_async(dispatch_get_main_queue(), {
+                DispatchQueue.main.async(execute: {
                     self.tableView.reloadData()
-                    UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 })
             })
         }
@@ -31,15 +31,15 @@ class StateDetailTableViewController: UITableViewController {
 
     // MARK: UITableViewDataSource
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 
         return representatives.count
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("representativeCell", forIndexPath: indexPath) as? RepresentativeTableViewCell ?? RepresentativeTableViewCell()
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "representativeCell", for: indexPath) as? RepresentativeTableViewCell ?? RepresentativeTableViewCell()
         
-        cell.representative = representatives[indexPath.row]
+        cell.representative = representatives[(indexPath as NSIndexPath).row]
 		
         return cell
     }
