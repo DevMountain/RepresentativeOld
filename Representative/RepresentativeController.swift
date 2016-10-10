@@ -12,7 +12,7 @@ class RepresentativeController {
 	
 	static let baseURLString = "http://whoismyrepresentative.com/getall_reps_bystate.php"
 	
-	static func searchRepsByState(_ state: String, completion: @escaping (_ representatives: [Representative]) -> Void) {
+	static func searchRepresentatives(forState state: String, completion: @escaping (_ representatives: [Representative]) -> Void) {
 		
 		guard let url = URL(string: baseURLString) else {
 			completion([])
