@@ -29,7 +29,7 @@ Students who complete this project independently are able to:
 
 ### Network Controller
 
-Create a `NetworkController` class. This will have methods to build the different URLs you might want and it should have a method to return NSData from a URL. 
+Create a `NetworkController` class. This will have methods to build the different URLs you might want and it should have a method to return `Data` from a URL. 
 
 The `NetworkController` will be responsible for building URLs and executing HTTP requests. Build the `NetworkController` to support different HTTP methods (GET, PUT, POST, PATCH, DELETE), and keep things generic such that you could use the same `NetworkController` in future projects if desired.
 
