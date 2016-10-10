@@ -18,14 +18,6 @@ class Representative {
     private let OfficeKey = "office"
     private let LinkKey = "link"
     
-    let name: String
-    let party: String
-    let state: String
-    let district: String
-    let phone: String
-    let office: String
-    let link: String
-    
     init?(json: [String: AnyObject]) {
         
         guard let name = json[NameKey] as? String,
@@ -44,4 +36,14 @@ class Representative {
         self.office = office
         self.link = link
     }
+	
+	// MARK: Properties
+	
+	let name: String
+	let party: String
+	let state: String
+	let district: String
+	let phone: String
+	let office: String
+	let link: String
 }

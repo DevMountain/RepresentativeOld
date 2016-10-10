@@ -9,10 +9,7 @@
 import UIKit
 
 class StateDetailTableViewController: UITableViewController {
-
-    var state: String?
-    var representatives: [Representative] = []
-    
+	
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -32,7 +29,7 @@ class StateDetailTableViewController: UITableViewController {
         }
     }
 
-    // MARK: - Table view data source
+    // MARK: UITableViewDataSource
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 
@@ -42,10 +39,13 @@ class StateDetailTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("representativeCell", forIndexPath: indexPath) as? RepresentativeTableViewCell ?? RepresentativeTableViewCell()
         
-        let representative = representatives[indexPath.row]
-        
-        cell.updateWithRepresentative(representative)
-        
+        cell.representative = representatives[indexPath.row]
+		
         return cell
     }
+	
+	// MARK: Properties
+	
+	var state: String?
+	var representatives: [Representative] = []
 }

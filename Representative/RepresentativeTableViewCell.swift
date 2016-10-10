@@ -9,19 +9,15 @@
 import UIKit
 
 class RepresentativeTableViewCell: UITableViewCell {
-
-    @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var partyLabel: UILabel!
-    @IBOutlet weak var districtLabel: UILabel!
-    @IBOutlet weak var websiteLabel: UILabel!
-    @IBOutlet weak var phoneLabel: UILabel!
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-    
-    func updateWithRepresentative(representative: Representative) {
+	
+	override func prepareForReuse() {
+		super.prepareForReuse()
+		representative = nil
+	}
+	
+    private func updateViews() {
+		
+		guard let representative = representative else { return }
         
         nameLabel.text = representative.name
         partyLabel.text = representative.party
@@ -31,10 +27,18 @@ class RepresentativeTableViewCell: UITableViewCell {
 
     }
 
-    override func setSelected(selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
+	// MARK: Properties
+	
+	var representative: Representative? {
+		didSet {
+			updateViews()
+		}
+	}
+	
+	@IBOutlet weak var nameLabel: UILabel!
+	@IBOutlet weak var partyLabel: UILabel!
+	@IBOutlet weak var districtLabel: UILabel!
+	@IBOutlet weak var websiteLabel: UILabel!
+	@IBOutlet weak var phoneLabel: UILabel!
 
 }
