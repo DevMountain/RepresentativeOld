@@ -37,9 +37,9 @@ It is good practice to write reusable code. Even when you do not plan to reuse t
 
 1. Write a `String` typed `enum` called `HTTPMethod`. You will use this enum to classify our HTTP requests as GET, PUT, POST, PATCH, or DELETE requests. Add cases for each.
     * example: `case Get = "GET"`
-2. Write a function signature `performRequest(for` that will take a `URL`, an `HTTPMethod`, an optional `[String: String]` dictionary of URL parameters, an optional `Data` request body, and an optional completion closure. The completion closure should include a `Data?` data parameter and an `Error?` error parameter, and the should return `Void`. 
+2. Write a function signature `performRequest(for url: httpMethod: urlParameters: body: completion:)` that will take a `URL`, an `HTTPMethod`, an optional `[String: String]` dictionary of URL parameters, an optional `Data` request body, and an optional completion closure. The completion closure should include a `Data?` data parameter and an `Error?` error parameter, and the should return `Void`. 
     * note: At this point, it is OK if you do not understand why you are including each parameter. Spend some time contemplating each parameter and why you would include it in this function. For example: An HTTP request is made up of a URL, and an HTTP Method. Certain requests need URL parameters. Certain POST or PUT requests can carry a body. The completion closure is included so you know when the request is complete.
-3. Add the following `url(byAdding parameters` function to your `NetworkController` class. This function takes URL parameters, a base URL, and returns a completed URL with the parameters in place.
+3. Add the following `url(byAdding parameters: to url:` function to your `NetworkController` class. This function takes URL parameters, a base URL, and returns a completed URL with the parameters in place.
     * example: To perform a Google Search, you use the URL `https://google.com/search?q=test`. 'q' and 'test' are URL parameters, with 'q' being the name, and 'test' beging the value. This function will take the base URL `https://google.com/search` and a `[String: String]` dictionary `["q":"test"]`, and return the URL `https://google.com/search?q=test`
 
 ```swift
@@ -55,8 +55,8 @@ It is good practice to write reusable code. Even when you do not plan to reuse t
     }
 ```
 
-4. Implement the `perform(request)` function.
-    * Use the `url(byAdding` to get a requestURL.
+4. Implement the `performRequest(for url: httpMethod: urlParameters: body: completion:)` function.
+    * Use the `url(byAdding parameters: to url:` to get a requestURL.
     * Creating a new `URLRequest`, set the HTTP method, set the body.
     * Generate and start the data task.
     * Calling the completion when the data task completes.
@@ -75,10 +75,10 @@ As of iOS 9, Apple is boosting security and requiring developers to use the secu
 ##### Create a `RepresentativeController` class. This class will use the `NetworkController` to fetch data, and will serialize the results into `Representative` objects. This class will be used by the view controllers to fetch Representative objects through completion closures.
 
 1. The `RepresentativeController` should have some static constant that represents the `baseURL` of the API.
-2. Add a method `searchRepresentatives(forState` that allows the developer to pass in the search parameter and, through a completion closure, provide an array of `Representative` objects.
+2. Add a method `searchRepresentatives(forState state: completion:` that allows the developer to pass in the search parameter and, through a completion closure, provide an array of `Representative` objects.
     * This method should set URL parameters for the state and the output types.
-    * This method should call the NetworkController's `performRequest(for` method to get the Data at the URL created in the previous bullet point.
-    * In the closure of the `performRequest(for`, use a guard to check for nil Data, and to unwrap the array of `[String: Any]` dictionaries that hold Representative data. You will need to use the `try?` keyword to use `JSONSerialization` to serialize the `Data`.
+    * This method should call the NetworkController's `performRequest` method to get the Data at the URL created in the previous bullet point.
+    * In the closure of the `performRequest`, use a guard to check for nil Data, and to unwrap the array of `[String: Any]` dictionaries that hold Representative data. You will need to use the `try?` keyword to use `JSONSerialization` to serialize the `Data`.
     * If the guard fails, print an error message to the console and run the completion with an empty array.
     * If the Data can be serialized, create a `Representative` objects and call the completion closure with the populated array. (Hint: Use a for loop or `flatMap` to iterate through the dictionaries and initialize a new array of `Representative` objects.)
 
@@ -113,7 +113,7 @@ The State List View Controller will pass a State string to this scene. We will u
 2. Create a prototype cell that uses a Stack View to display the name, party, district, website, and phone number of a `Representative`. 
 3. Create a custom `UITableViewCell` class with an `updateViews` function that sets the labels to the `Representative` data, and assign the prototype cell to the class. Call this function in the `didSet` of the `representative` variable.
 4. In the `StateDetailTableViewController`, Add a property of type `[Representative]` that will be used to populate the Table View. Set it to an empty array to satisfy the requirement that all properties have values upon initialization. 
-5. Add an optional `state` property of type `String`. This will be set by the `StateListViewController` in the `prepareForSegue` function.
+5. Add an optional `state` property of type `String`. This will be set by the `StateListViewController` in the `prepare(for segue:` function.
 6. Implement the UITableViewDataSource functions to return your custom prototype by setting the cell's `representative` variable.
 7. Update your `viewDidLoad` function to call the `RepresentativeController.searchRepresentatives` function using the unwrapped state property. In the completion closure, set `self.representatives` to the returned representatives and reload the UITableView on the main thread.
 
