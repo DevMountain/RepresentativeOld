@@ -37,33 +37,31 @@ It is good practice to write reusable code. Even when you do not plan to reuse t
 
 1. Write a `String` typed `enum` called `HTTPMethod`. You will use this enum to classify our HTTP requests as GET, PUT, POST, PATCH, or DELETE requests. Add cases for each.
     * example: `case Get = "GET"`
-2. Write a function signature `performRequestForURL` that will take an `NSURL`, an `HTTPMethod`, an optional `[String: String]` dictionary of URL parameters, an optional `NSData` request body, and an optional completion closure. The completion closure should include a `NSData?` data parameter and an `NSError?` error parameter, and the should return `Void`. 
+2. Write a function signature `performRequest` that will take a `URL`, an `HTTPMethod`, an optional `[String: String]` dictionary of URL parameters, an optional `Data` request body, and an optional completion closure. The completion closure should include a `Data?` data parameter and an `Error?` error parameter, and the should return `Void`. 
     * note: At this point, it is OK if you do not understand why you are including each parameter. Spend some time contemplating each parameter and why you would include it in this function. For example: An HTTP request is made up of a URL, and an HTTP Method. Certain requests need URL parameters. Certain POST or PUT requests can carry a body. The completion closure is included so you know when the request is complete.
-3. Add the following `urlFromURLParameters` function to your `NetworkController` class. This function takes a base URL, URL parameters, and returns a completed URL with the parameters in place.
+3. Add the following `url(byAdding parameters` function to your `NetworkController` class. This function takes a base URL, URL parameters, and returns a completed URL with the parameters in place.
     * example: To perform a Google Search, you use the URL `https://google.com/search?q=test`. 'q' and 'test' are URL parameters, with 'q' being the name, and 'test' beging the value. This function will take the base URL `https://google.com/search` and a `[String: String]` dictionary `["q":"test"]`, and return the URL `https://google.com/search?q=test`
 
 ```swift
-    static func urlFromURLParameters(url: NSURL, urlParameters: [String: String]?) -> NSURL {
+    static func url(byAdding parameters: [String: String], to url: URL) -> URL {
         
-        let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: true)
+        var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
+        components?.queryItems = parameters.flatMap({URLQueryItem(name: $0.0, value: $0.1)})
         
-        components?.queryItems = urlParameters?.flatMap({NSURLQueryItem(name: $0.0, value: $0.1)})
-        
-        if let url = components?.URL {
-            return url
-        } else {
-            fatalError("URL optional is nil")
-        }
+        guard let url = components?.url else { 
+            fatalError("URL optional is nil") 
+        } 
+        return url
     }
 ```
 
-4. Implement the `performRequestforURL` function.
-    * Use the `urlFromURLParameters` to get a requestURL.
-    * Creating a new `NSMutableURLRequest`, set the HTTP method, set the body.
+4. Implement the `perform(request)` function.
+    * Use the `url(byAdding` to get a requestURL.
+    * Creating a new `URLRequest`, set the HTTP method, set the body.
     * Generate and start the data task.
     * Calling the completion when the data task completes.
 
-This method will make the network call and call the completion closer with the `NSData?` result. If successful, `NSData?` will contain the response, if unsuccessful, `NSData?` will be nil. The class or function that calls this function will need to handle nil data.
+This method will make the network call and call the completion closer with the `Data?` result. If successful, `Data?` will contain the response, if unsuccessful, `Data?` will be nil. The class or function that calls this function will need to handle nil data.
 
 5. Use a Playground to test your network controller method with a sample endpoint from the [Who is My Representative API](http://whoismyrepresentative.com) to see if you are getting data returned.
 
@@ -77,14 +75,14 @@ As of iOS 9, Apple is boosting security and requiring developers to use the secu
 ##### Create a `RepresentativeController` class. This class will use the `NetworkController` to fetch data, and will serialize the results into `Representative` objects. This class will be used by the view controllers to fetch Representative objects through completion closures.
 
 1. The `RepresentativeController` should have some static constant that represents the `baseURL` of the API.
-2. Add a method `searchRepsByState` that allows the developer to pass in the search parameter and, through a completion closure, provide an array of `Representative` objects.
+2. Add a method `searchRepresentatives(forState` that allows the developer to pass in the search parameter and, through a completion closure, provide an array of `Representative` objects.
     * This method should set URL parameters for the state and the output types.
-    * This method should call the NetworkController's `performRequestforURL` method to get the NSData at the URL created in the previous bullet point.
-    * In the closure of the `performRequestforURL`, use a guard to check for nil NSData, and to unwrap the array of `[String: AnyObject]` dictionaries that hold Representative data. You will need to use the `try?` keyword to use `NSJSONSerialization` to serialize the `NSData`.
+    * This method should call the NetworkController's `performRequest(for` method to get the Data at the URL created in the previous bullet point.
+    * In the closure of the `performRequest(for`, use a guard to check for nil Data, and to unwrap the array of `[String: Any]` dictionaries that hold Representative data. You will need to use the `try?` keyword to use `JSONSerialization` to serialize the `Data`.
     * If the guard fails, print an error message to the console and run the completion with an empty array.
-    * If the NSData can be serialized, create a `Representative` objects and call the completion closure with the populated array. (Hint: Use a for loop or `flatMap` to iterate through the dictionaries and initialize a new array of `Representative` objects.)
+    * If the Data can be serialized, create a `Representative` objects and call the completion closure with the populated array. (Hint: Use a for loop or `flatMap` to iterate through the dictionaries and initialize a new array of `Representative` objects.)
 
-Note: There are many different patterns and techniques to serialize JSON data into Model objects. Feel free to experiment with different techniques to get at the `[String: AnyObject]` dictionaries within the NSData returned from the NSURLSessionDataTask. 
+Note: There are many different patterns and techniques to serialize JSON data into Model objects. Feel free to experiment with different techniques to get at the `[String: Any]` dictionaries within the Data returned from the URLSessionDataTask. 
 
 At this point you should be able to pull data for a specific state and serialize a list of Representatives. Test this functionality with a Playground or in your App Delegate by trying to print the results for a state to the console.
 
@@ -98,11 +96,11 @@ Recognize that even though the list of representatives may be called a List view
 
 ### State List View Controller
 
-Build a view that lists all states. Use the included `StateController.states()` variable to build the datasource for the UITableViewController. This view will be used to segue to a list of Representatives for the selected state.
+Build a view that lists all states. Use the included `all` variable in the `States.swift` file to build the datasource for the UITableViewController. This view will be used to segue to a list of Representatives for the selected state.
 
 1. Add a `UITableViewController` as your root view controller in Main.storyboard and embed it into a `UINavigationController`
 2. Create an `StateListTableViewController` file as a subclass of `UITableViewController` and set the class of your root view controller scene
-3. Implement the UITableViewDataSource functions using the included `StateController` states array
+3. Implement the UITableViewDataSource functions using the included `all` states array in the  `States.swift` file.
 4. Set up your cells to display the name of each state
 
 ### State Detail View Controller
@@ -113,20 +111,20 @@ The State List View Controller will pass a State string to this scene. We will u
 
 1. Add an additional `UITableViewController` scene to the Storyboard. Create a class file `StateDetailTableViewController.swift` and assign the class to the storyboard scene.
 2. Create a prototype cell that uses a Stack View to display the name, party, district, website, and phone number of a `Representative`. 
-3. Create a custom `UITableViewCell` class with an `updateWithRepresentative` function that sets the labels to the `Representative` data, and assign the prototype cell to the class.
-4. Add a property of type `[Representative]` that will be used to populate the Table View. Set it to an empty array to satisfy the requirement that all properties have values upon initialization. 
+3. Create a custom `UITableViewCell` class with an `updateViews` function that sets the labels to the `Representative` data, and assign the prototype cell to the class. Call this function in the `didSet` of the `representative` variable.
+4. In the `StateDetailTableViewController`, Add a property of type `[Representative]` that will be used to populate the Table View. Set it to an empty array to satisfy the requirement that all properties have values upon initialization. 
 5. Add an optional `state` property of type `String`. This will be set by the `StateListViewController` in the `prepareForSegue` function.
-6. Implement the UITableViewDataSource functions to return your custom prototype, use the `updateWithRepresentative` function to display the correct `Representative` data on each cell.
-7. Update your `viewDidLoad` function to call the `RepresentativeController.searchRepsByState` function using the unwrapped state property. In the completion closure, set `self.stateRepresentatives` to the returned representatives and reload the UITableView on the main thread.
+6. Implement the UITableViewDataSource functions to return your custom prototype by setting the cell's `representative` variable.
+7. Update your `viewDidLoad` function to call the `RepresentativeController.searchRepresentatives` function using the unwrapped state property. In the completion closure, set `self.representatives` to the returned representatives and reload the UITableView on the main thread.
 
-Note: It is good practice to let the user know that a network request is processing. This is most commonly done using the Network Activity Indicator in the status bar. Look up the documentation for `networkActivityIndicatorVisible` property on `UIApplication` to turn on the indicator when the view loads, and turn it off when the network call is complete.
+Note: It is good practice to let the user know that a network request is processing. This is most commonly done using the Network Activity Indicator in the status bar. Look up the documentation for `isNetworkActivityIndicatorVisible` property on `UIApplication` to turn on the indicator when the view loads, and turn it off when the network call is complete.
 
 ### Wire Up the Views
 
 Set up a segue from the State List View to the State Detail View that assigns the state that the State Detail View should load Representatives for.
 
 1. Add a segue from the prototype cell on the `StateListTableViewController` scene to the `StateDetailTableViewController` and assign an identifier.
-2. Implement the `prepareForSegue` function on the `StateListTableViewController` class to capture the state and assign it to the `destinationViewController`'s `state` property.
+2. Implement the `prepare(for segue:` function on the `StateListTableViewController` class to capture the state and assign it to the `destinationViewController`'s `state` property.
 
 ### Black Diamonds
 
