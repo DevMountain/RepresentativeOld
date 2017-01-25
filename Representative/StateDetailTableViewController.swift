@@ -39,7 +39,7 @@ class StateDetailTableViewController: UITableViewController {
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: "representativeCell", for: indexPath) as? RepresentativeTableViewCell ?? RepresentativeTableViewCell()
 		
-		cell.representative = representatives[(indexPath as NSIndexPath).row]
+		cell.representative = representatives[indexPath.row]
 		
 		return cell
 	}
