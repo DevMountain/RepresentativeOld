@@ -12,14 +12,14 @@ class StateListTableViewController: UITableViewController {
 
     // MARK: UITableViewDataSource
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return States.all.count
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("stateCell", forIndexPath: indexPath)
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "stateCell", for: indexPath)
 
-        let state = States.all[indexPath.row]
+        let state = States.all[(indexPath as NSIndexPath).row]
         
         cell.textLabel?.text = state
 
@@ -29,10 +29,10 @@ class StateListTableViewController: UITableViewController {
     // MARK: Navigation
 
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        if let destinationViewController = segue.destinationViewController as? StateDetailTableViewController,
-            let selectedIndex = tableView.indexPathForSelectedRow?.row {
+        if let destinationViewController = segue.destination as? StateDetailTableViewController,
+            let selectedIndex = (tableView.indexPathForSelectedRow as NSIndexPath?)?.row {
             
             let state = States.all[selectedIndex]
             destinationViewController.state = state

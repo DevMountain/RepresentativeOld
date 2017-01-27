@@ -10,13 +10,13 @@ import Foundation
 
 class Representative {
     
-    private let NameKey = "name"
-    private let PartyKey = "party"
-    private let StateKey = "state"
-    private let DistrictKey = "district"
-    private let PhoneKey = "phone"
-    private let OfficeKey = "office"
-    private let LinkKey = "link"
+    fileprivate let NameKey = "name"
+    fileprivate let PartyKey = "party"
+    fileprivate let StateKey = "state"
+    fileprivate let DistrictKey = "district"
+    fileprivate let PhoneKey = "phone"
+    fileprivate let OfficeKey = "office"
+    fileprivate let LinkKey = "link"
     
     init?(json: [String: AnyObject]) {
         
