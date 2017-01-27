@@ -19,7 +19,7 @@ class StateListTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "stateCell", for: indexPath)
 
-        let state = States.all[(indexPath as NSIndexPath).row]
+        let state = States.all[indexPath.row]
         
         cell.textLabel?.text = state
 
@@ -32,7 +32,7 @@ class StateListTableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if let destinationViewController = segue.destination as? StateDetailTableViewController,
-            let selectedIndex = (tableView.indexPathForSelectedRow as NSIndexPath?)?.row {
+            let selectedIndex = tableView.indexPathForSelectedRow?.row {
             
             let state = States.all[selectedIndex]
             destinationViewController.state = state

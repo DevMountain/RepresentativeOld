@@ -21,7 +21,7 @@ class RepresentativeController {
 		
 		let urlParameters = ["state": "\(state)", "output": "json"]
 		
-		NetworkController.performRequest(for: url, httpMethod: .Get, urlParameters: urlParameters) { (data, error) in
+		NetworkController.performRequest(for: url, httpMethod: .get, urlParameters: urlParameters) { (data, error) in
 			
 			if let error = error {
 				NSLog("Unable to get representatives for \(state): \(error)")
@@ -35,8 +35,8 @@ class RepresentativeController {
 			}
 			
 			do {
-				guard let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: AnyObject],
-					let representativeDictionaries = json["results"] as? [[String: AnyObject]] else {
+				guard let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any],
+					let representativeDictionaries = json["results"] as? [[String: Any]] else {
 						NSLog("JSON in unexpected format.")
 						completion([])
 						return

@@ -18,7 +18,7 @@ class Representative {
     fileprivate let OfficeKey = "office"
     fileprivate let LinkKey = "link"
     
-    init?(json: [String: AnyObject]) {
+    init?(json: [String: Any]) {
         
         guard let name = json[NameKey] as? String,
             let party = json[PartyKey] as? String,
