@@ -9,49 +9,53 @@
 import Foundation
 
 class RepresentativeController {
-	
-	static let baseURLString = "http://whoismyrepresentative.com/getall_reps_bystate.php"
-	
-	static func searchRepresentatives(forState state: String, completion: @escaping (_ representatives: [Representative]) -> Void) {
-		
-		guard let url = URL(string: baseURLString) else {
-			completion([])
-			return
-		}
-		
-		let urlParameters = ["state": "\(state)", "output": "json"]
-		
-		NetworkController.performRequest(for: url, httpMethod: .get, urlParameters: urlParameters) { (data, error) in
-			
-			if let error = error {
-				NSLog("Unable to get representatives for \(state): \(error)")
-				completion([])
-				return
-			}
-			guard let data = data else {
-				NSLog("Unable to get representatives for \(state): No data returned.")
-				completion([])
-				return
-			}
-			
-			do {
-				guard let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any],
-					let representativeDictionaries = json["results"] as? [[String: Any]] else {
-						NSLog("JSON in unexpected format.")
-						completion([])
-						return
-				}
-				
-				let representatives = representativeDictionaries.flatMap { Representative(json: $0) }
-				
-				completion(representatives)
-				
-			} catch {
-				NSLog("Unable to deserialize JSON: \(error)")
-				completion([])
-				return
-			}
-		}
-	}
+    
+    static let baseURLString = "http://whoismyrepresentative.com/getall_reps_bystate.php"
+    
+    static func searchRepresentatives(forState state: String, completion: @escaping (_ representatives: [Representative]) -> Void) {
+        
+        guard let url = URL(string: baseURLString) else {
+            completion([])
+            return
+        }
+        
+        let urlParameters = ["state": "\(state)", "output": "json"]
+        
+        var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
+        
+        let queryItems = urlParameters.flatMap({ URLQueryItem(name: $0.key, value: $0.value) })
+        
+        components?.queryItems = queryItems
+        
+        guard let requestURL = components?.url else { completion([]); return }
+        
+        
+        let dataTask = URLSession.shared.dataTask(with: requestURL) { (data, _, error) in
+            
+            if let error = error {
+                NSLog("Unable to get representatives for \(state): \(error)")
+                completion([])
+                return
+            }
+            guard let data = data, let responseDataString = String(data: data, encoding: .utf8) else {
+                NSLog("Unable to get representatives for \(state): No data returned.")
+                completion([])
+                return
+            }
+            
+            guard let jsonDictionary = (try? JSONSerialization.jsonObject(with: data, options: .allowFragments)) as? [String: Any],
+                let representativeDictionaries = jsonDictionary["results"] as? [[String: Any]] else {
+                    NSLog("Unable to serialize json. \nResponse: \(responseDataString)")
+                        completion([])
+                        return
+                }
+                
+                let representatives = representativeDictionaries.flatMap { Representative(json: $0) }
+                
+                completion(representatives)
+        }
+        
+        dataTask.resume()
+    }
 }
 
