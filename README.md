@@ -18,74 +18,39 @@ Students who complete this project independently are able to:
 1. Create a `Representative.swift` class file and define a new `Representative` class.
 2. Go to a sample endpoint of the [Who is my Representative](http://whoismyrepresentative.com) API and see what JSON (information) you will get back.
 3. Using this information, add properties on `Representative`.
-    * `let name: String`
-    * `let party: String`
-    * `let state: String`
-    * `let district: String`
-    * `let phone: String`
-    * `let office: String`
-    * `let link: String`
+* `let name: String`
+* `let party: String`
+* `let state: String`
+* `let district: String`
+* `let phone: String`
+* `let office: String`
+* `let link: String`
 4. Create a failable initializer method with a parameter of a JSON dictionary (`[String: Any]`). This is the method you will use to initialize your `Representative` objects from the JSON dictionary. Remember to use a sample endpoint to inspect the JSON you will get back and the keys you will use to get each piece of data.
-
-### Network Controller
-
-Create a `NetworkController` class. This will have methods needed to build the different URLs you might want to use and it will also have a method to return `Data` from a URL. 
-
-The `NetworkController` will be responsible for building URLs and executing HTTP requests. Build the `NetworkController` to support different HTTP methods (GET, PUT, POST, PATCH, DELETE), and keep things generic such that you could use the same `NetworkController` in future projects if desired.
-
-It is good practice to write reusable code. Even when you do not plan to reuse the class in future projects, it will help you keep the roles of your types properly separated. In this specific case, it is good practice for the `NetworkController` to not know anything about the project's model or controller types.
-
-1. Write a `String` typed `enum` called `HTTPMethod`. You will use this enum to classify our HTTP requests as GET, PUT, POST, PATCH, or DELETE requests. Add cases for each.
-    * example: `case get = "GET"`
-2. Write a static function signature `performRequest(for url: ...)` that will take a `URL`, an `HTTPMethod`, an optional `[String: String]` dictionary of URL parameters, an optional `Data` request body, and an optional completion closure. The completion closure should include a `Data?` data parameter, an `Error?` error parameter, and should return `Void`. 
-    * note: At this point, it is OK if you do not understand why you are including each parameter. Spend some time contemplating each parameter and why you would include it in this function. For example: An HTTP request is made up of a URL and an HTTP Method. Certain requests need URL parameters. Certain POST or PUT requests can carry a body. The completion closure is included so you know when the request is complete.
-3. Add the following `url(byAdding parameters: ...)` static function to your `NetworkController` class. This function takes URL parameters, a base URL, and returns a completed URL with the parameters in place.
-    * example: To perform a Google Search, you use the URL `https://google.com/search?q=test`. 'q' and 'test' are URL parameters, with 'q' being the name, and 'test' beging the value. This function will take the base URL `https://google.com/search` and a `[String: String]` dictionary `["q":"test"]`, and return the URL `https://google.com/search?q=test`
-
-```
-static func url(byAdding parameters: [String : String]?, to url: URL) -> URL {
-    var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
-    components?.queryItems = parameters?.flatMap({URLQueryItem(name: $0.0, value: $0.1)})
-
-    guard let url = components?.url else {
-        fatalError("URL optional is nil")
-    }
-    return url
-}
-```
-
-4. Implement the `performRequest(for url: ...)` function.
-    * Use the `url(byAdding parameters: ...)` to create a request URL.
-    * Create a `URLRequest` using your request URL, set the HTTP method, set the body.
-    * Generate and start the data task.
-    * Call the completion when the data task completes.
-
-This method will make the network call and call the completion closer with the `Data?` result. If successful, `Data?` will contain the response, if unsuccessful, `Data?` will be nil. The class or function that calls this function will need to handle nil data.
-
-5. Use a Playground to test your network controller method with a sample endpoint from the [Who is My Representative API](http://whoismyrepresentative.com) to see if you are getting data returned.
-
-As of iOS 9, Apple is boosting security and requiring developers to use the secure HTTPS protocol and require the server to use the proper TLS Certificate version. So for this app, you will need to turn off the App Transport Security feature.
-
-6. Open your `Info.plist` file and add a key-value pair to your Info.plist. This key-value pair should be: 
-`App Transport Security Settings : [Allow Arbitrary Loads : YES].`
 
 ### Representative Controller
 
-##### Create a `RepresentativeController` class. This class will use the `NetworkController` to fetch data and serialize the results into `Representative` objects. This class will be used by the view controllers to fetch Representative objects through completion closures.
+##### Create a `RepresentativeController` class. 
+
+This class will use the `URLSession` to fetch data and serialize the results into `Representative` objects. This class will be used by the view controllers to fetch Representative objects through completion closures.
+
+As of iOS 9, Apple is boosting security and requiring developers to use the secure HTTPS protocol and require the server to use the proper TLS Certificate version. So for this app, you will need to turn off the App Transport Security feature.
+
+Open your `Info.plist` file and add a key-value pair to your Info.plist. This key-value pair should be: 
+`App Transport Security Settings : [Allow Arbitrary Loads : YES].`
 
 1. The `RepresentativeController` should have a static constant that represents the `baseURL` of the API.
-2. Add a static function `searchRepresentatives(forState state: ...)` that allows the developer to pass in the search parameter and, through a completion closure, provide an array of `Representative` objects.
-    * This function should set URL parameters for the state and the output types.
-    * This function should call the NetworkController's `performRequest(for url: ...)` function to get Data from the `baseURL` and the URL parameters you just created.
-    * In the closure of the `performRequest(for url: ...)` function, use a guard statement to check for nil Data. 
-    * If the guard statement fails, print an error message to the console and run the completion with an empty array.
-    * If the guard statement doesn't fail then use `JSONSerialization` to serialize the `Data` and cast it as a dictionary `[String:Any]`. The function you will use to do this is a throwing function so be sure to use the `try` keyword and account for errors if the function throws an error.
-    * If the Data can be serialized, parse the json dictionary to get the information you need to create `Representative` objects.
-    * Create an array of `Representative` objects and call the completion closure with the populated array. (Hint: Use a for loop or `flatMap` to iterate through the dictionaries and initialize a new array of `Representative` objects.)
+2. Add a static function `searchRepresentatives(forState state: ...)` that allows the developer to pass in the search parameter, create a dataTask to fetch the representatives' data, and through a completion closure provide an array of `Representative` objects.
+* This function should set create a dictionary of the URL parameters for the state and the output types, then create an array of `URLQueryItem`s from the dictionary.
+* Create an instance of `URLComponents` with the `baseURL`, then attach the array of `URLQueryItem`s to it.
+* Using the `url` property that is a part of your `URLComponents`, create a dataTask using `URLSession`. Use the initializer with that takes in a `URL`, and has a completion closure. This is used to get `Data` back from the API.
+* In the completion closure of your dataTask, use a guard statement to check for nil Data, and if the guard statement fails, print an error message to the console and run the completion with an empty array.
+* If the guard statement doesn't fail then use `JSONSerialization` to serialize the `Data` and cast it as a dictionary `[String: Any]`. The function you will use to do this is a throwing function so be sure to use the `try?` keyword and account for the dictionary coming back as nil if the data cannot be serialized into JSON.
+* If the data can be serialized, parse the json dictionary to get the information you need to create `Representative` objects.
+* Create an array of `Representative` objects and call the completion closure with the populated array. (Hint: Use a for-in loop or `flatMap` to iterate through the dictionaries and initialize a new array of `Representative` objects.)
 
 Note: There are many different patterns and techniques to serialize JSON data into Model objects. Feel free to experiment with different techniques to get at the `[String: Any]` dictionaries within the Data returned from the URLSessionDataTask. 
 
-At this point you should be able to pull data for a specific state and serialize a list of Representatives. Test this functionality with a Playground or in your App Delegate by trying to print the results for a state to the console.
+At this point you should be able to pull data for a specific state and serialize a list of Representatives. Feel free to test this in your App Delegate by trying to print the results for a state to the console.
 
 ### View Hierarchy Notes
 
@@ -143,3 +108,4 @@ Please refer to CONTRIBUTING.md.
 ## Copyright
 
 © DevMountain LLC, 2015. Unauthorized use and/or duplication of this material without express and written permission from DevMountain, LLC is strictly prohibited. Excerpts and links may be used, provided that full and clear credit is given to DevMountain with appropriate and specific direction to the original content.
+
