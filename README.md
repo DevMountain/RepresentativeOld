@@ -2,7 +2,7 @@
 
 ### Level 2
 
-Students will build an app to get the representives (law makers) in a user-requested state to practice asynchronous network requests, working with JSON data, closures, and intermediate table views.
+Students will build an app to get the representatives (law makers) in a user-requested state to practice asynchronous network requests, working with JSON data, closures, and intermediate table views.
 
 Students who complete this project independently are able to:
 
@@ -29,13 +29,13 @@ Students who complete this project independently are able to:
 
 ### Representative Controller
 
-##### Create a `RepresentativeController` class. 
+##### Create a `RepresentativeController` class.
 
 This class will use the `URLSession` to fetch data and serialize the results into `Representative` objects. This class will be used by the view controllers to fetch Representative objects through completion closures.
 
 As of iOS 9, Apple is boosting security and requiring developers to use the secure HTTPS protocol and require the server to use the proper TLS Certificate version. So for this app, you will need to turn off the App Transport Security feature.
 
-Open your `Info.plist` file and add a key-value pair to your Info.plist. This key-value pair should be: 
+Open your `Info.plist` file and add a key-value pair to your Info.plist. This key-value pair should be:
 `App Transport Security Settings : [Allow Arbitrary Loads : YES].`
 
 1. The `RepresentativeController` should have a static constant that represents the `baseURL` of the API.
@@ -48,13 +48,13 @@ Open your `Info.plist` file and add a key-value pair to your Info.plist. This ke
 * If the data can be serialized, parse the json dictionary to get the information you need to create `Representative` objects.
 * Create an array of `Representative` objects and call the completion closure with the populated array. (Hint: Use a for-in loop or `flatMap` to iterate through the dictionaries and initialize a new array of `Representative` objects.)
 
-Note: There are many different patterns and techniques to serialize JSON data into Model objects. Feel free to experiment with different techniques to get at the `[String: Any]` dictionaries within the Data returned from the URLSessionDataTask. 
+Note: There are many different patterns and techniques to serialize JSON data into Model objects. Feel free to experiment with different techniques to get at the `[String: Any]` dictionaries within the Data returned from the URLSessionDataTask.
 
 At this point you should be able to pull data for a specific state and serialize a list of Representatives. Feel free to test this in your App Delegate by trying to print the results for a state to the console.
 
 ### View Hierarchy Notes
 
-You will implement a 'Master-Detail' view hierarchy for this application. 
+You will implement a 'Master-Detail' view hierarchy for this application.
 
 Your Master View is a list of states. Selecting any state will segue to a Detail View displaying a list of representatives for the selected state.
 
@@ -71,17 +71,17 @@ Build a view that lists all states. Use the included `all` variable in the `Stat
 
 ### State Detail View Controller
 
-Build a view that lists all of the Representatives for a selected state. Use a UITableViewController and a custom UITableViewCell that displays the properties of a Representative (name, party, state, district, phone, and url). 
+Build a view that lists all of the Representatives for a selected state. Use a UITableViewController and a custom UITableViewCell that displays the properties of a Representative (name, party, state, district, phone, and url).
 
 The State List View Controller will pass a State string to this scene. We will use that value to perform the network request. When the network request is completed, you will reload the UITableView to display the results.
 
 1. Add an additional `UITableViewController` scene to the Storyboard. Create a class file `StateDetailTableViewController.swift` and assign the class to the storyboard scene.
-2. Create a prototype cell that uses a Stack View to display the name, party, district, website, and phone number of a `Representative`. 
-3. Create a custom `UITableViewCell` class with an `updateViews()` function that sets the labels to the `Representative` data and assign the prototype cell in storyboard to the class. (Don't forget to create outlets for your labels) 
+2. Create a prototype cell that uses a Stack View to display the name, party, district, website, and phone number of a `Representative`.
+3. Create a custom `UITableViewCell` class with an `updateViews()` function that sets the labels to the `Representative` data and assign the prototype cell in storyboard to the class. (Don't forget to create outlets for your labels)
 4. Create a `representative` computed property and in the `didSet` of that property call `updateViews()`.
 5. In the `StateDetailTableViewController`, add a computed property of type `[Representative]` that will be used to populate the Table View. Set it to an empty array to satisfy the requirement that all properties have values upon initialization and in the `didSet` reload the table view.
 6. Add an optional `state` property of type `String`. This will be set by the `StateListViewController` in the `prepare(for segue: UIStoryboardSegue, sender: Any?)` function.
-7. Implement the UITableViewDataSource functions to return your custom prototype cell by setting the cell's `representative` variable.
+7. Implement the UITableViewDataSource functions to return your custom prototype cell by setting the cell's `representative` variable. (You'll need to cast the cell as the custom cell you created)
 8. Update your `viewDidLoad()` function to call the `RepresentativeController.searchRepresentatives(forState:...)` function using the unwrapped state property. In the completion closure, set `self.representatives` to the returned representatives and reload the UITableView on the main thread.
 
 Note: It is good practice to let the user know that a network request is processing. This is most commonly done using the Network Activity Indicator in the status bar. Look up the documentation for the `isNetworkActivityIndicatorVisible` property on `UIApplication` to turn on the indicator when the view loads and to turn it off when the network call is complete.
@@ -98,7 +98,7 @@ The app is now finished. Run it, check for bugs, and fix any that you might find
 ### Black Diamonds
 
 * Implement another way for users to find their Congressman/Congresswoman.
-* If no Represenatives were "found", notify the user that a search failed.
+* If no Representatives were "found", notify the user that a search failed.
 * Make the phone, office, and website labels links that would call, open a map view, and open a web view.
 
 ## Contributions
@@ -108,4 +108,3 @@ Please refer to CONTRIBUTING.md.
 ## Copyright
 
 © DevMountain LLC, 2015. Unauthorized use and/or duplication of this material without express and written permission from DevMountain, LLC is strictly prohibited. Excerpts and links may be used, provided that full and clear credit is given to DevMountain with appropriate and specific direction to the original content.
-
