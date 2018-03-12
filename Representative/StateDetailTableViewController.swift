@@ -22,7 +22,6 @@ class StateDetailTableViewController: UITableViewController {
 				self.representatives = representatives
 				
 				DispatchQueue.main.async {
-					self.tableView.reloadData()
 					UIApplication.shared.isNetworkActivityIndicatorVisible = false
 				}
 			}
@@ -49,7 +48,9 @@ class StateDetailTableViewController: UITableViewController {
 	var state: String?
 	var representatives: [Representative] = [] {
 		didSet {
-			tableView?.reloadData()
+			DispatchQueue.main.async {
+				self.tableView?.reloadData()
+			}
 		}
 	}
 }
