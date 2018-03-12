@@ -20,7 +20,6 @@ class StateListTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "stateCell", for: indexPath)
 
         let state = States.all[indexPath.row]
-        
         cell.textLabel?.text = state
 
         return cell

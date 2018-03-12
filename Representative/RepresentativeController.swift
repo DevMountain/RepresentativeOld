@@ -9,27 +9,21 @@
 import Foundation
 
 class RepresentativeController {
-    
-    static let baseURLString = "http://whoismyrepresentative.com/getall_reps_bystate.php"
-    
-    static func searchRepresentatives(forState state: String, completion: @escaping (_ representatives: [Representative]) -> Void) {
+	
+	static let baseURL = URL(string: "http://whoismyrepresentative.com/getall_reps_bystate.php")!
+	
+	static let shared = RepresentativeController()
+	
+    func searchRepresentatives(forState state: String, completion: @escaping (_ representatives: [Representative]) -> Void) {
         
-        guard let url = URL(string: baseURLString) else {
-            completion([])
-            return
-        }
-        
+        let url = RepresentativeController.baseURL
         let urlParameters = ["state": "\(state)", "output": "json"]
-        
         var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
-        
         let queryItems = urlParameters.flatMap({ URLQueryItem(name: $0.key, value: $0.value) })
-        
         components?.queryItems = queryItems
         
         guard let requestURL = components?.url else { completion([]); return }
-        
-        
+
         let dataTask = URLSession.shared.dataTask(with: requestURL) { (data, _, error) in
             
             if let error = error {
@@ -51,7 +45,6 @@ class RepresentativeController {
                 }
                 
                 let representatives = representativeDictionaries.flatMap { Representative(json: $0) }
-                
                 completion(representatives)
         }
         

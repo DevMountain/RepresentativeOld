@@ -40,5 +40,4 @@ class RepresentativeTableViewCell: UITableViewCell {
 	@IBOutlet weak var districtLabel: UILabel!
 	@IBOutlet weak var websiteLabel: UILabel!
 	@IBOutlet weak var phoneLabel: UILabel!
-
 }

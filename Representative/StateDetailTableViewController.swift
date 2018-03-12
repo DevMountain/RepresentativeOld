@@ -17,7 +17,7 @@ class StateDetailTableViewController: UITableViewController {
 			
 			UIApplication.shared.isNetworkActivityIndicatorVisible = true
 			
-			RepresentativeController.searchRepresentatives(forState: state) { (representatives) in
+			RepresentativeController.shared.searchRepresentatives(forState: state) { (representatives) in
 				
 				self.representatives = representatives
 				
@@ -30,8 +30,7 @@ class StateDetailTableViewController: UITableViewController {
 	
 	// MARK: UITableViewDataSource
 	
-	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		
+	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {		
 		return representatives.count
 	}
 	
