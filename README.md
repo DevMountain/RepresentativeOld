@@ -40,14 +40,16 @@ Open your `Info.plist` file and add a key-value pair to your Info.plist. This ke
 
 1. The `RepresentativeController` should have a static constant that represents the `baseURL` of the API.
 2. Add a  function `searchRepresentatives(forState state: ...)` that allows the developer to pass in the search parameter, create a dataTask to fetch the representatives' data, and through a completion closure provide an array of `Representative` objects.
-* This function should set create a dictionary of the URL parameters for the state and the output types, then create an array of `URLQueryItem`s from the dictionary.
-* Create an instance of `URLComponents` with the `baseURL`, then attach the array of `URLQueryItem`s to it.
-* Using the `url` property that is a part of your `URLComponents`, create a dataTask using `URLSession`. Use the initializer with that takes in a `URL`, and has a completion closure. This is used to get `Data` back from the API.
-* In the completion closure of your dataTask, use a guard statement to check for nil data, and if the guard statement fails, print an error message to the console and run the completion with an empty array.
-**Note:** Currently, whoismyrepresentative.com incorrectly encodes letters with diacrtic marks, e.g. ú using extended ASCII, not UTF-8. This means that trying to convert the data to a string using .utf8 will fail for some states, where the representatives have diacritics in their names. To workaround this, we decode into a string using ASCII, then reencode the string as data using .utf8 before passing the fixed UTF-8 data into the JSON decoder.
-* If the guard statement doesn't fail then use `JSONDecoder` to decode the `Data` as a dictionary `[String: [Representative]]`. 
-* Get the array of `Representative`s using resultsDictionary["results"]
-* Call the completion closure with the array of decoded array of `Representative`s.
+3. This function should set create a dictionary of the URL parameters for the state and the output types, then create an array of `URLQueryItem`s from the dictionary.
+4. Create an instance of `URLComponents` with the `baseURL`, then attach the array of `URLQueryItem`s to it.
+5. Using the `url` property that is a part of your `URLComponents`, create a dataTask using `URLSession`. Use the initializer with that takes in a `URL`, and has a completion closure. This is used to get `Data` back from the API.
+6. In the completion closure of your dataTask, use a guard statement to check for nil data, and if the guard statement fails, print an error message to the console and run the completion with an empty array.  
+
+**Note:** Currently, whoismyrepresentative.com incorrectly encodes letters with diacrtic marks, e.g. ú using extended ASCII, not UTF-8. This means that trying to convert the data to a string using .utf8 will fail for some states, where the representatives have diacritics in their names. To workaround this, we decode into a string using ASCII, then reencode the string as data using .utf8 before passing the fixed UTF-8 data into the JSON decoder.  
+
+7. If the guard statement doesn't fail then use `JSONDecoder` to decode the `Data` as a dictionary `[String: [Representative]]`. 
+8. Get the array of `Representative`s using resultsDictionary["results"]
+9. Call the completion closure with the array of decoded array of `Representative`s.
 
 Note: There are many different patterns and techniques to deserialize JSON data into Model objects. Feel free to experiment with different techniques to turn the data returned from the URLSessionDataTask into an array of `Representative`s.
 
@@ -99,7 +101,7 @@ The app is now finished. Run it, check for bugs, and fix any that you might find
 ### Black Diamonds
 
 * Implement another way for users to find their Congressman/Congresswoman.
-* If no Representatives were "found", notify the user that a search failed.
+* If no Representatives were found, notify the user that a search failed.
 * Make the phone, office, and website labels links that would call, open a map view, and open a web view.
 
 ## Contributions
