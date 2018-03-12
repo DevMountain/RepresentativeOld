@@ -8,35 +8,8 @@
 
 import Foundation
 
-class Representative {
-    
-    private let NameKey = "name"
-    private let PartyKey = "party"
-    private let StateKey = "state"
-    private let DistrictKey = "district"
-    private let PhoneKey = "phone"
-    private let OfficeKey = "office"
-    private let LinkKey = "link"
-    
-    init?(json: [String: Any]) {
-        
-        guard let name = json[NameKey] as? String,
-            let party = json[PartyKey] as? String,
-            let state = json[StateKey] as? String,
-            let district = json[DistrictKey] as? String,
-            let phone = json[PhoneKey] as? String,
-            let office = json[OfficeKey] as? String,
-            let link = json[LinkKey] as? String else { return nil }
-        
-        self.name = name
-        self.party = party
-        self.state = state
-        self.district = district
-        self.phone = phone
-        self.office = office
-        self.link = link
-    }
-	
+struct Representative: Codable {
+    	
 	// MARK: Properties
 	
 	let name: String

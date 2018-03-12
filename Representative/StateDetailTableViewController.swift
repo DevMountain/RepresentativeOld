@@ -17,7 +17,7 @@ class StateDetailTableViewController: UITableViewController {
 			
 			UIApplication.shared.isNetworkActivityIndicatorVisible = true
 			
-			RepresentativeController.shared.searchRepresentatives(forState: state) { (representatives) in
+			representativeController.searchRepresentatives(forState: state) { (representatives) in
 				
 				self.representatives = representatives
 				
@@ -52,4 +52,6 @@ class StateDetailTableViewController: UITableViewController {
 			}
 		}
 	}
+	
+	private let representativeController = RepresentativeController()
 }

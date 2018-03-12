@@ -11,10 +11,8 @@ import Foundation
 class RepresentativeController {
 	
 	static let baseURL = URL(string: "https://whoismyrepresentative.com/getall_reps_bystate.php")!
-	
-	static let shared = RepresentativeController()
-	
-	func searchRepresentatives(forState state: String, completion: @escaping (_ representatives: [Representative]) -> Void) {
+		
+	func searchRepresentatives(forState state: String, completion: @escaping ([Representative]) -> Void) {
 		
 		let url = RepresentativeController.baseURL
 		let urlParameters = ["state": "\(state)", "output": "json"]
@@ -49,15 +47,14 @@ class RepresentativeController {
 					return
 			}
 			
-			guard let jsonDictionary = (try? JSONSerialization.jsonObject(with: fixedData, options: [])) as? [String: Any],
-				let representativeDictionaries = jsonDictionary["results"] as? [[String: Any]] else {
-					NSLog("Unable to deserialize json. \nResponse: \(responseDataString)")
-					completion([])
-					return
+			do {
+				let resultsDict = try JSONDecoder().decode([String : [Representative]].self, from: fixedData)
+				guard let representatives = resultsDict["results"] else { throw NSError() }
+				completion(representatives)
+			} catch {
+				NSLog("Error decoding JSON (\(responseDataString)): \(error)")
+				completion([])
 			}
-			
-			let representatives = representativeDictionaries.flatMap { Representative(json: $0) }
-			completion(representatives)
 		}
 		
 		dataTask.resume()
