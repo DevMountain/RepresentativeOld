@@ -44,10 +44,10 @@ Open your `Info.plist` file and add a key-value pair to your Info.plist. This ke
 4. Create an instance of `URLComponents` with the `baseURL`, then attach the array of `URLQueryItem`s to it.
 5. Using the `url` property that is a part of your `URLComponents`, create a dataTask using `URLSession`. Use the initializer with that takes in a `URL`, and has a completion closure. This is used to get `Data` back from the API.
 6. In the completion closure of your dataTask, use a guard statement to check for nil data, and if the guard statement fails, print an error message to the console and run the completion with an empty array.  
+7. If the guard statement doesn't fail then use `JSONDecoder` to decode the `Data` as a dictionary `[String: [Representative]]`.  
 
-**Note:** Currently, whoismyrepresentative.com incorrectly encodes letters with diacrtic marks, e.g. ú using extended ASCII, not UTF-8. This means that trying to convert the data to a string using .utf8 will fail for some states, where the representatives have diacritics in their names. To workaround this, we decode into a string using ASCII, then reencode the string as data using .utf8 before passing the fixed UTF-8 data into the JSON decoder.  
+**Note:** Currently, whoismyrepresentative.com incorrectly encodes letters with diacrtic marks, e.g. ú, using extended ASCII, not UTF-8. This means that trying to convert the data to a string using .utf8 will fail for some states, where the representatives have diacritics in their names. To workaround this, decode data into a string using `.ascii`, then reencode the string as data using `.utf8` before passing the fixed UTF-8 data into the JSON decoder.  
 
-7. If the guard statement doesn't fail then use `JSONDecoder` to decode the `Data` as a dictionary `[String: [Representative]]`. 
 8. Get the array of `Representative`s using resultsDictionary["results"]
 9. Call the completion closure with the array of decoded array of `Representative`s.
 
